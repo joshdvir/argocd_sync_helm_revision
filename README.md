@@ -7,5 +7,6 @@ docker run --rm \
   -e PLUGIN_APPLICATION_NAME=argy \
   -e PLUGIN_REVISION=100 \
   -e PLUGIN_GRPC_WEB=true \
+  -e PLUGIN_SYNC=true \
   joshdvir/argocd_sync_helm_revision
 ```

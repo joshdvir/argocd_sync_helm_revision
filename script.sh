@@ -27,6 +27,10 @@ else
   export PLUGIN_GRPC_WEB='--grpc-web'
 fi
 
+if [ -z "$PLUGIN_SYNC" ]; then
+  export PLUGIN_SYNC="true"
+fi
+
 export ARGOCD_SERVER=$PLUGIN_ARGOCD_SERVER
 export ARGOCD_AUTH_TOKEN=$PLUGIN_AUTH_TOKEN
 
@@ -35,5 +39,7 @@ chmod +x /usr/local/bin/argocd
 
 argocd app patch "$PLUGIN_APPLICATION_NAME" --patch "{\"spec\": { \"source\": { \"targetRevision\": \"$PLUGIN_REVISION\" }}}" --type merge "$PLUGIN_GRPC_WEB"
 
-argocd app sync "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
-argocd app wait "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
+if [ "$PLUGIN_SYNC" == "true" ]; then
+  argocd app sync "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
+  argocd app wait "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
+fi
