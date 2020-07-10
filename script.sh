@@ -21,13 +21,21 @@ if [ -z "$PLUGIN_REVISION" ]; then
   exit 1
 fi
 
+if [ -z "$PLUGIN_GRPC_WEB" ]; then
+  export PLUGIN_GRPC_WEB=''
+  echo "Missing grpc_web, can't continue, exiting."
+  exit 1
+else
+  export PLUGIN_GRPC_WEB='--grpc-web'
+fi
+
 export ARGOCD_SERVER=$PLUGIN_ARGOCD_SERVER
 export ARGOCD_AUTH_TOKEN=$PLUGIN_AUTH_TOKEN
 
 curl -sSL -o /usr/local/bin/argocd "https://${ARGOCD_SERVER}/download/argocd-linux-amd64"
 chmod +x /usr/local/bin/argocd
 
-argocd app patch "$PLUGIN_APPLICATION_NAME" --patch "{\"spec\": { \"source\": { \"targetRevision\": \"$PLUGIN_REVISION\" }}}" --type merge
+argocd app patch "$PLUGIN_APPLICATION_NAME" --patch "{\"spec\": { \"source\": { \"targetRevision\": \"$PLUGIN_REVISION\" }}}" --type merge "$PLUGIN_GRPC_WEB"
 
-argocd app sync "$PLUGIN_APPLICATION_NAME"
-argocd app wait "$PLUGIN_APPLICATION_NAME"
+argocd app sync "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
+argocd app wait "$PLUGIN_APPLICATION_NAME" "$PLUGIN_GRPC_WEB"
