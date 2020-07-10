@@ -23,8 +23,6 @@ fi
 
 if [ -z "$PLUGIN_GRPC_WEB" ]; then
   export PLUGIN_GRPC_WEB=''
-  echo "Missing grpc_web, can't continue, exiting."
-  exit 1
 else
   export PLUGIN_GRPC_WEB='--grpc-web'
 fi
