@@ -34,7 +34,7 @@ fi
 export ARGOCD_SERVER=$PLUGIN_ARGOCD_SERVER
 export ARGOCD_AUTH_TOKEN=$PLUGIN_AUTH_TOKEN
 
-curl -sSL -o /usr/local/bin/argocd "https://${ARGOCD_SERVER}/download/argocd-linux-amd64"
+wget -q -O /usr/local/bin/argocd "https://${ARGOCD_SERVER}/download/argocd-linux-amd64"
 chmod +x /usr/local/bin/argocd
 
 argocd app patch "$PLUGIN_APPLICATION_NAME" --patch "{\"spec\": { \"source\": { \"targetRevision\": \"$PLUGIN_REVISION\" }}}" --type merge "$PLUGIN_GRPC_WEB"

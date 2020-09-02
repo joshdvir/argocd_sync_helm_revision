@@ -2,7 +2,7 @@ FROM alpine
 
 RUN apk --update add --no-cache \
   bash \
-  curl
+  wget
 
 ADD script.sh /bin/
 
